@@ -16,6 +16,7 @@
  * 9. Ignore Numbers > 1000 – example: `2 + 1001 = 2`
  * 10. Delimiter of Any Length – example: `//[***]\n1***2***3`
  * 11. Multiple Single-Char Delimiters – example: `//[*][%]\n1*2%3`
+ * 12. Multiple Multi-Char Delimiters (of any length) – example: `//[***][%%%]\n1***2%%%3`  
  */
 import { StringCalculator } from './../src/core/string-calculator';
 
@@ -123,6 +124,16 @@ describe('StringCalculator Test Suite', () => {
             expect(calculator.add('//[*][%]\n1*2%3')).toBe(6);
             expect(calculator.add('//[@][#]\n4@5#6')).toBe(15);
             expect(calculator.add('//[!][-]\n1!2-3')).toBe(6);
+        });
+    });
+
+    // Feature 12: Multiple Multi-Char Delimiters
+    describe('Feature 12: Multiple Multi-Char Delimiters (Of Any Length) (e.g., //[***][%%%]\\n1***2%%%3)', () => {
+        it('should return correct sum using multiple multi-char delimiters', () => {
+            expect(calculator.add('//[***][%%%]\n1***2%%%3')).toBe(6);
+            expect(calculator.add('//[##][&&]\n10##20&&30')).toBe(60);
+            expect(calculator.add('//[abc][xyz]\n1abc2xyz3')).toBe(6);
+            expect(calculator.add('//[--][+++]\n5--10+++15')).toBe(30);
         });
     });
 
