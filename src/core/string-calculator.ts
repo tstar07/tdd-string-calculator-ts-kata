@@ -9,10 +9,11 @@ export class StringCalculator {
      * Add method to perform calculations for the given string input
      * 
      * @param numbers A string containing numbers and delimiters.
-     * @returns Returns 0 for empty input.
+     * @returns 0 for empty input, or the number itself for a single number input.
      */
      add(numbers: string): number {      
-        return 0;      
+        // Return 0 for empty string; return the number itself for single input
+        return (!numbers) ? 0 : Number(numbers);    
     }
     
 } // StringCalculator
