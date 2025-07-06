@@ -3,9 +3,16 @@
 /**
  * Parses given string into a number 
  */
-export function parseNumber(str: string): number {   
-    const parsed_num = Number(str.trim()); 
-    return isNaN(parsed_num) ? 0 : parsed_num;
+export function parseNumber(str: string): number { 
+    const trimmed = str.trim();
+    if (trimmed === '') {
+        throw new Error(`Invalid number: ""`);
+    }
+    const parsed_num = Number(trimmed);
+    if (isNaN(parsed_num)) {
+        throw new Error(`Invalid number: "${trimmed}"`);
+    } 
+    return parsed_num;
 }
 
 /**

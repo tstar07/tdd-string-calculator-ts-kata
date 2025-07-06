@@ -120,7 +120,7 @@ describe('StringCalculator Test Suite', () => {
 
     // Feature 11: Multiple Single-Char Custom Delimiters
     describe('Feature 11: Multiple Single-Char Delimiters (e.g., //[#][%]\\n1#2%3)', () => {
-        it('should correctly sum using multiple single-char delimiters', () => {
+        it('should return correct sum using multiple single-char delimiters', () => {
             expect(calculator.add('//[*][%]\n1*2%3')).toBe(6);
             expect(calculator.add('//[@][#]\n4@5#6')).toBe(15);
             expect(calculator.add('//[!][-]\n1!2-3')).toBe(6);
@@ -134,6 +134,28 @@ describe('StringCalculator Test Suite', () => {
             expect(calculator.add('//[##][&&]\n10##20&&30')).toBe(60);
             expect(calculator.add('//[abc][xyz]\n1abc2xyz3')).toBe(6);
             expect(calculator.add('//[--][+++]\n5--10+++15')).toBe(30);
+        });
+    });
+    
+    //additional Edge Case Validations
+    describe('Validation: invalid number input', () => {
+        it('should throw error for non-numeric input like "1,a,3"', () => {
+            expect(() => calculator.add('1,a,3')).toThrow('Invalid number: "a"');
+        });
+        it('should throw error for empty value between delimiters', () => {
+            expect(() => calculator.add('1,,2')).toThrow('Invalid number: ""');
+        });
+
+        it('should throw error for completely non-numeric input', () => {
+            expect(() => calculator.add('abc')).toThrow('Invalid number: "abc"');
+        });
+
+        it('should throw error for partially valid multi-char string', () => {
+            expect(() => calculator.add('4,5x')).toThrow('Invalid number: "5x"');
+        });
+
+        it('should throw error for mixed numeric and non-numeric token', () => {
+            expect(() => calculator.add('1,2a,3')).toThrow('Invalid number: "2a"');
         });
     });
 
