@@ -14,6 +14,7 @@
  *    7.1 Combine multiple negatives in one message (example: `Negative numbers not allowed: -1, -4`)
  * 8. Track Method Calls – Count how many times `add()` was called  
  * 9. Ignore Numbers > 1000 – example: `2 + 1001 = 2`
+ * 10. Delimiter of Any Length – example: `//[***]\n1***2***3`
  */
 import { StringCalculator } from './../src/core/string-calculator';
 
@@ -102,6 +103,16 @@ describe('StringCalculator Test Suite', () => {
             expect(calculator.add('2,1001')).toBe(2);
             expect(calculator.add('1000,1')).toBe(1001);
             expect(calculator.add('2000\n3000\n4')).toBe(4);
+        });
+    });
+
+    // Feature 10: Delimiter of Any Length – example: `//[***]\n1***2***3`
+    describe('Feature 10: Delimiter of Any Length (example: `//[***]\n1***2***3`)', () => {
+        it('should return correct sum for custom delimiter of any length ', () => {
+          expect(calculator.add('//[***]\n1***2***3')).toBe(6);
+          expect(calculator.add('//[****]\n1****2****2')).toBe(5);
+          expect(calculator.add('//[##]\n4##5##6')).toBe(15);
+          expect(calculator.add('//[abc]\n7abc8abc9')).toBe(24);
         });
     });
 

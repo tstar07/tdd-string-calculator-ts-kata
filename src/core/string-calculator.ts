@@ -8,6 +8,9 @@ import { parseNumber, throwNegativesError, isLessThanEqualTo } from './../helper
 export class StringCalculator {
     
     private _call_count = 0;
+    private readonly _INPUT_STRING_PREFIX = '//';
+    private readonly _DEFAULT_DELIMITERS = [',', '\n'];
+    private readonly _NEW_LINE_DELIMITER = this._DEFAULT_DELIMITERS[1];
 
     /**
      * Add method to perform calculations for the given string input
@@ -18,6 +21,7 @@ export class StringCalculator {
      * - Negative number validation (throws if negative numbers exist)
      * - Tracks how many times `add()` is called 
      * - Ignores numbers greater than 1000
+     * - Single multi-character delimiter: `//[***]\n1***2`
      * 
      * @param numbers A string containing numbers and delimiters.
      * @returns The sum of all numbers, or 0 for empty input.
@@ -27,24 +31,13 @@ export class StringCalculator {
         // increment every time add is called
         this._incrementCallCount(); 
 
-        // Default delimiters: comma and newline
-        let delimiter_regex = /,|\n/;
-        let nums_str = numbers;
-        
-        // If custom delimiter is format starts with '//'
-        if (numbers.startsWith('//')) {
+        //gets numbers section only from the input
+        const nums_str = this._getNumbersSection(numbers);
 
-            //extracts custom delimiter 
-            const delimiter = numbers[2];
+        // build a regex to split on different delimiters extracted via _getDelimiters from the given input
+        const delimiter_regex = this._generateDelimiterRegex(this._getDelimiters(numbers));       
 
-            //builds regex using the custom delimiter (example: ";" from "//;\n1;2")
-            delimiter_regex = new RegExp(`[${delimiter}]`);
-
-            //extract the number part from the input string after '\n'
-            nums_str = numbers.substring(4); 
-        }
-
-        // Split input by delimiter regex, parse each, and sum them
+        // Split input by delimiter regex, parse each, and sum them and ignores greater than 1000
         const nums_arr = (nums_str) ? nums_str.split(delimiter_regex).map(parseNumber).filter(isLessThanEqualTo(1000)) : []; 
 
         //throws negative numbers error if exists 
@@ -69,6 +62,73 @@ export class StringCalculator {
      */
     public getCalledCount(): number {
         return this._call_count;
+    }
+
+    /**
+     * Gets the list of delimiters from the input string.
+     * 
+     * Supports:
+     * - Default delimiters: comma (`,`) and newline (`\n`)
+     * - Single custom delimiter: `//;\n1;2`
+     * - Single multi-character delimiter: `//[***]\n1***2`
+     *
+     * @param input - The raw input string including optional delimiter block.
+     * @returns An array of delimiters to be used for splitting.
+     */
+    private _getDelimiters(input: string): string[] {
+
+        if (!input.startsWith(this._INPUT_STRING_PREFIX)) 
+            return this._DEFAULT_DELIMITERS;
+
+        const delimiter_end = input.indexOf(this._NEW_LINE_DELIMITER);
+
+        const delimiter_block = input.slice(2, delimiter_end);
+
+        // Supports single multi-char delimiter like [***]
+        const delimiter_match = delimiter_block.match(/^\[(.+)\]$/);
+
+        if (delimiter_match) 
+            return [delimiter_match[1]];
+
+        // returns array with single-char delimiter (like `;` in `//;\n1;2`)
+        return [delimiter_block];
+    }
+
+    
+    /**
+     * Gets the numbers portion of the input string.
+     * If the input starts with a custom delimiter syntax (e.g., "//;\n1;2"),
+     * it skips the delimiter declaration and returns only the number section.
+     *
+     * @param input - The raw input string.
+     * @returns The substring containing only numbers and delimiters.
+     */
+    private _getNumbersSection(str: string): string {
+        return str.startsWith(this._INPUT_STRING_PREFIX) ? str.slice(str.indexOf(this._NEW_LINE_DELIMITER) + 1) : str;
+    }
+
+    /**
+     * Generates a regular expression from a list of delimiters.
+     * This regex is used to split the input number string.
+     *
+     * @param delimiters - An array of delimiters to be used.
+     * @param separator - Optional joiner (default is '|') to combine into regex OR logic.
+     * @returns A RegExp
+     */
+    private _generateDelimiterRegex(delimiters: string[], separator = '|'): RegExp {
+        const escaped = delimiters.map(this._parseRegex).join(separator);
+        return new RegExp(escaped);
+    }
+
+    /**
+     * Clears special characters in a delimiter to make it regex-safe.
+     * Useful for symbols like '*', '+', '[', etc., that have special meaning in RegExp.
+     *
+     * @param str - A single delimiter string to escape.
+     * @returns A regex-safe version of the input string.
+     */
+    private _parseRegex(str: string): string {
+        return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
     
 } // StringCalculator

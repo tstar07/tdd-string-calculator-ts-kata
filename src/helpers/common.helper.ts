@@ -4,7 +4,8 @@
  * Parses given string into a number 
  */
 export function parseNumber(str: string): number {   
-    return Number(str.trim()); 
+    const parsed_num = Number(str.trim()); 
+    return isNaN(parsed_num) ? 0 : parsed_num;
 }
 
 /**
