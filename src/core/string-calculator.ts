@@ -1,19 +1,22 @@
 // src/core/string-calculator.ts
 
+import { parseNumber } from './../helpers/common.helper';
+
 /**
  * StringCalculator with add logic scenarios for the given number string.
  */
 export class StringCalculator {
-
+    
     /**
      * Add method to perform calculations for the given string input
      * 
      * @param numbers A string containing numbers and delimiters.
-     * @returns 0 for empty input, or the number itself for a single number input.
+     * @returns Sum of all comma-separated numbers, or 0 for empty input.
      */
-     add(numbers: string): number {      
-        // Return 0 for empty string; return the number itself for single input
-        return (!numbers) ? 0 : Number(numbers);    
+    add(numbers: string): number {
+        // Split numbers by comma, parse each, and sum them
+        const nums_arr = (numbers) ? numbers.split(',').map(parseNumber) : [];
+        return nums_arr.reduce((acc, n) => acc + n, 0);
     }
     
 } // StringCalculator
