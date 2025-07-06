@@ -1,6 +1,6 @@
 // src/core/string-calculator.ts
 
-import { parseNumber } from './../helpers/common.helper';
+import { parseNumber, throwNegativesError } from './../helpers/common.helper';
 
 /**
  * StringCalculator with add logic scenarios for the given number string.
@@ -13,6 +13,7 @@ export class StringCalculator {
      * Supports:
      * - Default delimiters: comma (`,`) and newline (`\n`)
      * - Custom single-character delimiter: Format → `//;\n1;2`
+     * - Negative number validation (throws if negative numbers exist)
      * 
      * @param numbers A string containing numbers and delimiters.
      * @returns The sum of all numbers, or 0 for empty input.
@@ -37,7 +38,11 @@ export class StringCalculator {
         }
 
         // Split input by delimiter regex, parse each, and sum them
-        const nums_arr = (nums_str) ? nums_str.split(delimiter_regex).map(parseNumber) : [];        
+        const nums_arr = (nums_str) ? nums_str.split(delimiter_regex).map(parseNumber) : []; 
+
+        //throws negative numbers error if exists 
+        throwNegativesError(nums_arr);       
+
         return nums_arr.reduce((acc, n) => acc + n, 0);
     }
     

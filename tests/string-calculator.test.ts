@@ -10,6 +10,8 @@
  * 4. Multiple Numbers – Handle any count of numbers
  * 5. Newlines as Delimiters - Handle `\n` as a valid delimiter
  * 6. Custom Delimiter – Format: `//[delimiter]\n[numbers...]` 
+ * * 7. Negative Numbers – Throw error for negatives - 
+ *    7.1 Combine multiple negatives in one message (example: `Negative numbers not allowed: -1, -4`) - 
  */
 import { StringCalculator } from './../src/core/string-calculator';
 
@@ -69,6 +71,17 @@ describe('StringCalculator Test Suite', () => {
             expect(calculator.add('//#\n3#4#5')).toBe(12);
         });
     }); 
+
+    // Feature 7: Negative Numbers
+    describe('Feature 7: Negative Numbers - single', () => {      
+        it('Feature 7.0: should throw error with a single negative number', () => {
+            expect(() => calculator.add('-1')).toThrow('Negative numbers not allowed: -1');
+        });
+
+        it('Feature 7.1: should throw error with multiple negative numbers in message', () => {
+            expect(() => calculator.add('1,-2,3,-5')).toThrow('Negative numbers not allowed: -2, -5');
+        });
+    });
 
 });
     
