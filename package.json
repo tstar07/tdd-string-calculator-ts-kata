@@ -1,0 +1,25 @@
+{
+  "name": "tdd-string-calculator-ts-kata",
+  "version": "1.0.0",
+  "description": "A clean TDD implementation of the String Calculator Kata in TypeScript",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "author": "Thasnim",
+  "license": "MIT",
+  "keywords": [
+    "TDD",
+    "TypeScript",
+    "Jest",
+    "String Calculator",
+    "Kata"
+  ],
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "jest": "^30.0.4",
+    "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}

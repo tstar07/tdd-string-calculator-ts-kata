@@ -1,0 +1,19 @@
+# Node modules
+node_modules/
+
+# coverage 
+coverage/
+
+# Build output
+dist/
+build/
+
+# VS Code settings
+.vscode/
+
+# Logs
+logs/
+*.log
+
+# Environment variables if any
+.env
