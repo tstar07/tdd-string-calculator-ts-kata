@@ -10,8 +10,9 @@
  * 4. Multiple Numbers – Handle any count of numbers
  * 5. Newlines as Delimiters - Handle `\n` as a valid delimiter
  * 6. Custom Delimiter – Format: `//[delimiter]\n[numbers...]` 
- * * 7. Negative Numbers – Throw error for negatives - 
- *    7.1 Combine multiple negatives in one message (example: `Negative numbers not allowed: -1, -4`) - 
+ * 7. Negative Numbers – Throw error for negatives - 
+ *    7.1 Combine multiple negatives in one message (example: `Negative numbers not allowed: -1, -4`)
+ * 8. Track Method Calls** – Count how many times `add()` was called  
  */
 import { StringCalculator } from './../src/core/string-calculator';
 
@@ -82,6 +83,19 @@ describe('StringCalculator Test Suite', () => {
             expect(() => calculator.add('1,-2,3,-5')).toThrow('Negative numbers not allowed: -2, -5');
         });
     });
+
+    // Feature 8: Track Add Method Calls
+    describe('Feature 8: Track Add Method Calls', () => {
+        it('should return the correct count of how many times add() was called', () => {
+            calculator.add('1,2');    // 1st call
+            calculator.add('3');      // 2nd call
+            calculator.add('4,5,6');  // 3rd call
+    
+            expect(calculator.getCalledCount()).toBe(3);
+        });
+    });
+
+    
 
 });
     
