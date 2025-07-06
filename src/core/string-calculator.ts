@@ -22,6 +22,7 @@ export class StringCalculator {
      * - Tracks how many times `add()` is called 
      * - Ignores numbers greater than 1000
      * - Single multi-character delimiter: `//[***]\n1***2`
+     * - Multiple delimiters: `//[*][%]\n1*2%3` 
      * 
      * @param numbers A string containing numbers and delimiters.
      * @returns The sum of all numbers, or 0 for empty input.
@@ -37,7 +38,7 @@ export class StringCalculator {
         // build a regex to split on different delimiters extracted via _getDelimiters from the given input
         const delimiter_regex = this._generateDelimiterRegex(this._getDelimiters(numbers));       
 
-        // Split input by delimiter regex, parse each, and sum them and ignores greater than 1000
+        // Split input by delimiter regex, parse each, ignore >1000, and calculate sum
         const nums_arr = (nums_str) ? nums_str.split(delimiter_regex).map(parseNumber).filter(isLessThanEqualTo(1000)) : []; 
 
         //throws negative numbers error if exists 
@@ -71,6 +72,7 @@ export class StringCalculator {
      * - Default delimiters: comma (`,`) and newline (`\n`)
      * - Single custom delimiter: `//;\n1;2`
      * - Single multi-character delimiter: `//[***]\n1***2`
+     * - Multiple delimiters: `//[*][%]\n1*2%3` 
      *
      * @param input - The raw input string including optional delimiter block.
      * @returns An array of delimiters to be used for splitting.
@@ -84,16 +86,20 @@ export class StringCalculator {
 
         const delimiter_block = input.slice(2, delimiter_end);
 
-        // Supports single multi-char delimiter like [***]
-        const delimiter_match = delimiter_block.match(/^\[(.+)\]$/);
-
-        if (delimiter_match) 
-            return [delimiter_match[1]];
+        
+        // Matches all [delim] patterns inside the block (supports both single and multi-char delimiters)
+        const delimiter_matches = [...delimiter_block.matchAll(/\[(.+?)\]/g)];      
+        
+        // Handles extraction of multiple delimiters:
+        // example "//[*][%]\n1*2%3" → ['*', '%']
+        //       "//[***][%%%]\n1***2%%%3" → ['***', '%%%']
+        if (delimiter_matches.length > 0) {
+            return delimiter_matches.map(m => m[1]);
+        }
 
         // returns array with single-char delimiter (like `;` in `//;\n1;2`)
         return [delimiter_block];
     }
-
     
     /**
      * Gets the numbers portion of the input string.
@@ -112,7 +118,7 @@ export class StringCalculator {
      * This regex is used to split the input number string.
      *
      * @param delimiters - An array of delimiters to be used.
-     * @param separator - Optional joiner (default is '|') to combine into regex OR logic.
+     * @param separator - Optional joiner (default: '|') for combining delimiters into regex OR pattern
      * @returns A RegExp
      */
     private _generateDelimiterRegex(delimiters: string[], separator = '|'): RegExp {

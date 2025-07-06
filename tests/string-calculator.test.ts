@@ -15,6 +15,7 @@
  * 8. Track Method Calls – Count how many times `add()` was called  
  * 9. Ignore Numbers > 1000 – example: `2 + 1001 = 2`
  * 10. Delimiter of Any Length – example: `//[***]\n1***2***3`
+ * 11. Multiple Single-Char Delimiters – example: `//[*][%]\n1*2%3`
  */
 import { StringCalculator } from './../src/core/string-calculator';
 
@@ -116,7 +117,14 @@ describe('StringCalculator Test Suite', () => {
         });
     });
 
-    
+    // Feature 11: Multiple Single-Char Custom Delimiters
+    describe('Feature 11: Multiple Single-Char Delimiters (e.g., //[#][%]\\n1#2%3)', () => {
+        it('should correctly sum using multiple single-char delimiters', () => {
+            expect(calculator.add('//[*][%]\n1*2%3')).toBe(6);
+            expect(calculator.add('//[@][#]\n4@5#6')).toBe(15);
+            expect(calculator.add('//[!][-]\n1!2-3')).toBe(6);
+        });
+    });
 
 });
     
