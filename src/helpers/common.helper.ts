@@ -8,6 +8,11 @@ export function parseNumber(str: string): number {
 }
 
 /**
+ * Checks if a number is ≤ max.
+ */
+export const isLessThanEqualTo = (max: number) => (n: number) => n <= max;
+
+/**
  * Returns true if the number is negative.
  */
 export function isNegative(num: number): boolean {

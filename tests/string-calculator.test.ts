@@ -12,7 +12,8 @@
  * 6. Custom Delimiter – Format: `//[delimiter]\n[numbers...]` 
  * 7. Negative Numbers – Throw error for negatives - 
  *    7.1 Combine multiple negatives in one message (example: `Negative numbers not allowed: -1, -4`)
- * 8. Track Method Calls** – Count how many times `add()` was called  
+ * 8. Track Method Calls – Count how many times `add()` was called  
+ * 9. Ignore Numbers > 1000 – example: `2 + 1001 = 2`
  */
 import { StringCalculator } from './../src/core/string-calculator';
 
@@ -92,6 +93,15 @@ describe('StringCalculator Test Suite', () => {
             calculator.add('4,5,6');  // 3rd call
     
             expect(calculator.getCalledCount()).toBe(3);
+        });
+    });
+
+    // Feature 9: ignore numbers > 1000 for example 2 + 1001 = 2
+    describe('Feature 9: Ignore numbers > 1000 (example 2 + 1001 = 2)', () => {
+        it('should ignore numbers greater than 1000', () => {
+            expect(calculator.add('2,1001')).toBe(2);
+            expect(calculator.add('1000,1')).toBe(1001);
+            expect(calculator.add('2000\n3000\n4')).toBe(4);
         });
     });
 

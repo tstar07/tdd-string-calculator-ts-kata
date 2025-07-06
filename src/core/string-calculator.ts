@@ -1,6 +1,6 @@
 // src/core/string-calculator.ts
 
-import { parseNumber, throwNegativesError } from './../helpers/common.helper';
+import { parseNumber, throwNegativesError, isLessThanEqualTo } from './../helpers/common.helper';
 
 /**
  * StringCalculator with add logic scenarios for the given number string.
@@ -17,6 +17,7 @@ export class StringCalculator {
      * - Custom single-character delimiter: Format → `//;\n1;2`
      * - Negative number validation (throws if negative numbers exist)
      * - Tracks how many times `add()` is called 
+     * - Ignores numbers greater than 1000
      * 
      * @param numbers A string containing numbers and delimiters.
      * @returns The sum of all numbers, or 0 for empty input.
@@ -44,7 +45,7 @@ export class StringCalculator {
         }
 
         // Split input by delimiter regex, parse each, and sum them
-        const nums_arr = (nums_str) ? nums_str.split(delimiter_regex).map(parseNumber) : []; 
+        const nums_arr = (nums_str) ? nums_str.split(delimiter_regex).map(parseNumber).filter(isLessThanEqualTo(1000)) : []; 
 
         //throws negative numbers error if exists 
         throwNegativesError(nums_arr);       
