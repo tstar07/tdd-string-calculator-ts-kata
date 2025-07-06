@@ -7,6 +7,7 @@
  * 1. Empty Input – Return 0 for an empty string
  * 2. Single Number – Return the number itself 
  * 3. Two Numbers – Return sum of two comma-separated numbers
+ * 4. Multiple Numbers – Handle any count of numbers
  */
 import { StringCalculator } from './../src/core/string-calculator';
 
@@ -39,6 +40,15 @@ describe('StringCalculator Test Suite', () => {
             expect(calculator.add('1,2')).toBe(3);
             expect(calculator.add('5,15')).toBe(20);
             expect(calculator.add('0,7')).toBe(7);
+        });
+    });
+
+    //Feature 4: Multiple Numbers
+    describe('Feature 4: Multiple Numbers (handle unknown length of comma-separated numbers)', () => {
+        it('should return the correct sum', () => {
+          expect(calculator.add('1,2,3')).toBe(6);
+          expect(calculator.add('10,20,30,40')).toBe(100);
+          expect(calculator.add('5,5,5,5,5,1,1,1,1,1')).toBe(30);
         });
     });
 

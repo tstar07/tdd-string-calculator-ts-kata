@@ -6,12 +6,12 @@ import { parseNumber } from './../helpers/common.helper';
  * StringCalculator with add logic scenarios for the given number string.
  */
 export class StringCalculator {
-    
+
     /**
      * Add method to perform calculations for the given string input
      * 
      * @param numbers A string containing numbers and delimiters.
-     * @returns Sum of all comma-separated numbers, or 0 for empty input.
+     * @returns The sum of all numbers, or 0 for empty input.
      */
     add(numbers: string): number {
         // Split numbers by comma, parse each, and sum them
