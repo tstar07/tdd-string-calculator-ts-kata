@@ -8,6 +8,7 @@
  * 2. Single Number – Return the number itself 
  * 3. Two Numbers – Return sum of two comma-separated numbers
  * 4. Multiple Numbers – Handle any count of numbers
+ * 5. Newlines as Delimiters - Handle `\n` as a valid delimiter 
  */
 import { StringCalculator } from './../src/core/string-calculator';
 
@@ -49,6 +50,14 @@ describe('StringCalculator Test Suite', () => {
           expect(calculator.add('1,2,3')).toBe(6);
           expect(calculator.add('10,20,30,40')).toBe(100);
           expect(calculator.add('5,5,5,5,5,1,1,1,1,1')).toBe(30);
+        });
+    });
+
+    // Feature 5: Newline Delimiter
+    describe('Feature 5: Newline Delimiter', () => {        
+        it('should return the correct sum for both newline and comma delimiter', () => {
+          expect(calculator.add('1\n2,3')).toBe(6);
+          expect(calculator.add('4\n2\n6')).toBe(12);
         });
     });
 
