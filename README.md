@@ -75,7 +75,6 @@ tdd-string-calculator-ts-kata/
 ├── tests/                     # All test files
 │   └── string-calculator.test.ts
 │
-├── CHANGELOG.md               # Manual changelog following commit messages
 ├── README.md                  # Project overview and setup
 ├── package.json               # Project dependencies and scripts
 ├── tsconfig.json              # TypeScript configuration
